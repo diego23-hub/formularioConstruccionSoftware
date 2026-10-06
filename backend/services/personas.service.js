@@ -1,11 +1,29 @@
-const personasModel = require('../models/personas.model');
+const Persona = require('../models/personas.models');
+exports.getAll = async () => {
+    return await Persona.findAll();
+};
 
-exports.getAll = (cb) => personasModel.getAll(cb);
+exports.getById = async (id) => {
+    return await Persona.findByPk(id);
+};
 
-exports.getById = (id, cb) => personasModel.getById(id, cb);
+exports.create = async (data) => {
+    return await Persona.create(data);
 
-exports.create = (persona, cb) => personasModel.create(persona, cb);
+    //recibe el objeto y lo transforma
+};
 
-exports.update = (id, persona, cb) => personasModel.update(id, persona, cb);
+exports.update = async (id, data) => {
+    const personas = await Persona.findByPk(id);
+    if (!personas) return null;
+//obtenemos al usuario por su id, si el usuario es nulo no hace actualizaciones
+    return await Persona.update(data);
+    //si no es nulo llama al método update
+};
 
-exports.delete = (id, cb) => personasModel.delete(id, cb);
+exports.delete = async (id) => {
+    const personas = await Persona.findByPk(id);
+    if (!Persona) return null;
+
+    await personas.destroy();
+};
