@@ -1,41 +1,46 @@
-const personasService = require('../services/personas.service');
+const personasService = require('../services/personas.services');
 
 exports.getAll = async (req, res) => {
-    const data = await service.getAll();
-    res.json(data);
+    try {
+        const data = await personasService.getAll();
+        res.json(data);
+    } catch (err) {
+        return res.status(500).json(err); // Equivalente a tu antiguo: if (err) return res.status(500)...
+    }
 };
 
-exports.getAll = (req, res) => {
-    personasService.getAll((err, results) => {
-        if (err) return res.status(500).json(err);
-        res.json(results);
-    });
+exports.getById = async (req, res) => {
+    try {
+        const data = await personasService.getById(req.params.id);
+        res.json(data);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
 };
 
-exports.getById = (req, res) => {
-    personasService.getById(req.params.id, (err, results) => {
-        if (err) return res.status(500).json(err);
-        res.json(results[0]);
-    });
+exports.create = async (req, res) => {
+    try {
+        const data = await personasService.create(req.body);
+        res.json(data);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
 };
 
-exports.create = (req, res) => {
-    personasService.create(req.body, (err, result) => {
-        if (err) return res.status(500).json(err);
-        res.json({ id: result.insertId, ...req.body });
-    });
-};
-
-exports.update = (req, res) => {
-    personasService.update(req.params.id, req.body, (err) => {
-        if (err) return res.status(500).json(err);
+exports.update = async (req, res) => {
+    try {
+        await personasService.update(req.params.id, req.body);
         res.json({ mensaje: 'El registro de persona fue actualizado' });
-    });
+    } catch (err) {
+        return res.status(500).json(err);
+    }
 };
 
-exports.delete = (req, res) => {
-    personasService.delete(req.params.id, (err) => {
-        if (err) return res.status(500).json(err);
+exports.delete = async (req, res) => {
+    try {
+        await personasService.delete(req.params.id);
         res.json({ mensaje: 'El registro de persona fue eliminado' });
-    });
+    } catch (err) {
+        return res.status(500).json(err);
+    }
 };
