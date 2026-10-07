@@ -1,6 +1,11 @@
 const personasService = require('../services/personas.service');
 
 exports.getAll = async (req, res) => {
+    const data = await service.getAll();
+    res.json(data);
+};
+
+exports.getAll = (req, res) => {
     personasService.getAll((err, results) => {
         if (err) return res.status(500).json(err);
         res.json(results);
